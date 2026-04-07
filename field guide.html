@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Field Guide — HVAC System ID</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#6B2D0F;--brand-mid:#8B3A12;--brand-light:#A0522D;
+  --accent:#E87A2A;--accent-light:#F59E0B;
+  --bg:#F7F3EF;--surface:#FFF;--surface2:#FDF8F4;
+  --border:#E8DDD4;--border-dark:#D4C4B0;
+  --text:#1C1209;--text2:#5C4033;--text3:#9C7B6B;
+  --green:#16A34A;--green-bg:#DCFCE7;--green-dark:#166534;
+  --red:#DC2626;--red-bg:#FEE2E2;--red-dark:#991B1B;
+  --yellow:#D97706;--yellow-bg:#FEF3C7;--yellow-dark:#92400E;
+  --blue:#1D4ED8;--blue-bg:#DBEAFE;
+  --gray:#6B7280;--gray-bg:#F3F4F6;
+  --sh-sm:0 1px 3px rgba(107,45,15,.08);
+  --sh:0 4px 12px rgba(107,45,15,.12);
+  --sh-lg:0 12px 32px rgba(107,45,15,.18);
+  --r:10px;--rl:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;padding-bottom:80px}
+
+.topbar{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-mid) 60%,var(--brand-light) 100%);
+  color:#fff;padding:env(safe-area-inset-top,0px) 16px 0;min-height:56px;display:flex;align-items:center;
+  justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.25);position:sticky;top:0;z-index:50}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-icon{width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2);flex-shrink:0}
+.topbar-title{font-size:.95rem;font-weight:800;letter-spacing:-.02em}
+.topbar-sub{font-size:.62rem;opacity:.65;margin-top:1px}
+.mode-label{font-size:.75rem;font-weight:600;opacity:.8}
+
+.screen{display:none;max-width:640px;margin:0 auto;padding:20px 16px}
+.screen.active{display:block}
+
+.home-title{font-size:1.6rem;font-weight:800;line-height:1.2;margin-bottom:6px;color:var(--text)}
+.home-sub{font-size:.85rem;color:var(--text3);margin-bottom:24px;line-height:1.6}
+
+.mode-cards{display:flex;flex-direction:column;gap:10px}
+.mode-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);
+  padding:16px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:14px;
+  box-shadow:var(--sh-sm)}
+.mode-card:hover{border-color:var(--accent);box-shadow:var(--sh)}
+.mode-card:active{background:var(--surface2)}
+.mode-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mode-icon.id{background:var(--yellow-bg);color:var(--yellow-dark)}
+.mode-icon.qualify{background:var(--green-bg);color:var(--green-dark)}
+.mode-icon.learn{background:var(--blue-bg);color:var(--blue)}
+.mode-title{font-size:.9rem;font-weight:700;margin-bottom:2px;color:var(--text)}
+.mode-desc{font-size:.75rem;color:var(--text3);line-height:1.4}
+.mode-arrow{margin-left:auto;color:var(--text3);font-size:1.1rem;flex-shrink:0}
+
+.screen-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.back-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:1rem;color:var(--text2);flex-shrink:0;box-shadow:var(--sh-sm)}
+.back-btn:hover{border-color:var(--accent);color:var(--brand)}
+.screen-title{font-size:1rem;font-weight:800;color:var(--text)}
+
+.step-indicator{font-size:.7rem;font-weight:700;color:var(--text3);margin-bottom:14px;
+  font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+
+.question-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);
+  padding:20px;margin-bottom:14px;box-shadow:var(--sh-sm)}
+.question-text{font-size:1rem;font-weight:700;line-height:1.5;margin-bottom:8px;color:var(--text)}
+.question-hint{font-size:.75rem;color:var(--text3);margin-bottom:18px;line-height:1.6;
+  background:var(--surface2);border-radius:8px;padding:8px 10px;border-left:3px solid var(--border-dark)}
+
+.answer-btns{display:flex;flex-direction:column;gap:8px}
+.ans-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;color:var(--text);font-size:.9rem;font-family:'DM Sans',sans-serif;font-weight:600;
+  cursor:pointer;text-align:left;transition:all .12s;display:flex;align-items:center;gap:10px}
+.ans-btn:active{transform:scale(.98)}
+.ans-btn.yes{border-color:var(--green);color:var(--green-dark);background:var(--green-bg)}
+.ans-btn.yes:hover{background:#bbf7d0}
+.ans-btn.no{border-color:var(--red);color:var(--red-dark);background:var(--red-bg)}
+.ans-btn.no:hover{background:#fecaca}
+
+.result-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);
+  padding:20px;margin-bottom:12px;box-shadow:var(--sh-sm)}
+.result-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;
+  font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.result-badge.gas{background:var(--yellow-bg);color:var(--yellow-dark)}
+.result-badge.electric{background:var(--blue-bg);color:var(--blue)}
+.result-badge.heatpump{background:var(--green-bg);color:var(--green-dark)}
+.result-badge.dual{background:#FEF3C7;color:var(--yellow-dark)}
+
+.result-name{font-size:1.3rem;font-weight:800;margin-bottom:8px;color:var(--text)}
+.result-desc{font-size:.82rem;color:var(--text2);line-height:1.6;margin-bottom:18px;
+  padding-bottom:16px;border-bottom:1.5px solid var(--border)}
+.clues-title{font-size:.65rem;font-weight:800;color:var(--brand);text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:10px}
+.clue-item{display:flex;gap:10px;margin-bottom:9px;align-items:flex-start}
+.clue-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:5px}
+.clue-text{font-size:.82rem;line-height:1.5;color:var(--text)}
+
+.illustration{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:center}
+
+.restart-btn{width:100%;padding:13px;background:var(--surface);border:1.5px solid var(--border-dark);
+  border-radius:var(--r);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:.85rem;
+  font-weight:700;cursor:pointer;margin-top:8px;transition:all .15s}
+.restart-btn:hover{border-color:var(--accent);color:var(--brand)}
+
+.qualify-row{margin-bottom:18px}
+.qualify-label{font-size:.65rem;font-weight:800;color:var(--brand);text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:8px}
+.qualify-opts{display:flex;flex-wrap:wrap;gap:7px}
+.qualify-chip{background:var(--surface);border:1.5px solid var(--border);border-radius:99px;
+  padding:7px 14px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .12s;
+  color:var(--text2);font-family:'DM Sans',sans-serif}
+.qualify-chip:hover{border-color:var(--accent);color:var(--brand)}
+.qualify-chip.selected{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+.calc-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--r);
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;
+  margin-top:4px;transition:background .15s;box-shadow:0 4px 12px rgba(232,122,42,.3)}
+.calc-btn:hover{background:#d46b1a}
+.calc-btn:active{transform:scale(.98)}
+
+.rebate-result{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.rebate-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh-sm)}
+.rebate-name{font-size:.85rem;font-weight:700;margin-bottom:3px;color:var(--text)}
+.rebate-note{font-size:.7rem;color:var(--text3)}
+.rebate-amt{font-size:1rem;font-weight:800;color:var(--green-dark);white-space:nowrap;margin-left:12px}
+.rebate-total{background:var(--green-bg);border:1.5px solid var(--green);border-radius:var(--r);
+  padding:14px;display:flex;justify-content:space-between;align-items:center}
+.rebate-total-label{font-size:.78rem;color:var(--green-dark);font-weight:700}
+.rebate-total-amt{font-size:1.2rem;font-weight:800;color:var(--green-dark)}
+.rebate-disclaimer{font-size:.68rem;color:var(--text3);line-height:1.5;padding:8px 0}
+
+.quiz-img{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);
+  margin-bottom:14px;display:flex;align-items:center;justify-content:center;min-height:160px;padding:16px}
+.quiz-question{font-size:.95rem;font-weight:700;line-height:1.5;margin-bottom:14px;color:var(--text)}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.quiz-opt{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:13px 16px;font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:600;
+  cursor:pointer;text-align:left;color:var(--text);transition:all .12s}
+.quiz-opt:hover{border-color:var(--accent);color:var(--brand)}
+.quiz-opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green-dark)}
+.quiz-opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red-dark)}
+
+.quiz-feedback{background:var(--surface2);border:1.5px solid var(--border-dark);border-left:4px solid var(--accent);
+  border-radius:var(--r);padding:14px;font-size:.82rem;line-height:1.6;color:var(--text2);
+  margin-bottom:12px;display:none}
+.quiz-feedback.show{display:block}
+
+.next-btn{width:100%;padding:13px;background:var(--brand);border:none;border-radius:var(--r);
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;
+  display:none;transition:background .15s}
+.next-btn.show{display:block}
+.next-btn:hover{background:var(--brand-mid)}
+
+.score-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);
+  padding:32px 20px;text-align:center;margin-bottom:14px;box-shadow:var(--sh-sm)}
+.score-num{font-size:3.5rem;font-weight:800;color:var(--brand);font-family:'DM Mono',monospace;line-height:1}
+.score-label{font-size:.78rem;color:var(--text3);margin-top:4px;margin-bottom:16px;font-weight:600}
+.score-msg{font-size:.88rem;line-height:1.6;color:var(--text2)}
+
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);
+  border-top:1.5px solid var(--border);display:flex;z-index:100;
+  box-shadow:0 -4px 12px rgba(107,45,15,.08)}
+.nav-btn{flex:1;padding:10px 8px 14px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;border:none;background:none;color:var(--text3);font-family:'DM Sans',sans-serif;
+  font-size:.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:color .12s}
+.nav-btn.active{color:var(--brand)}
+.nav-icon{font-size:1.1rem;line-height:1}
+.nav-btn.active .nav-icon svg{stroke:var(--brand)}
+
+.dsec{font-size:.65rem;font-weight:800;color:var(--brand);text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" width="18" height="18">
+        <path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/>
+      </svg>
+    </div>
+    <div>
+      <div class="topbar-title">Field Guide</div>
+      <div class="topbar-sub" id="mode-label">HVAC System ID</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen active" id="screen-home">
+  <div style="padding-top:4px">
+    <div class="home-title">What's in<br>this house?</div>
+    <div class="home-sub">Identify systems, qualify upgrades, and sharpen your skills — built for the field.</div>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="showScreen('screen-id')">
+        <div class="mode-icon id">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="mode-title">Identify system</div>
+          <div class="mode-desc">Answer what you see — get the system type and what to look for</div>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+      <div class="mode-card" onclick="showScreen('screen-qualify')">
+        <div class="mode-icon qualify">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="mode-title">Qualify upgrades</div>
+          <div class="mode-desc">See what rebates and incentives this home can get</div>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz()">
+        <div class="mode-icon learn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="mode-title">Learn &amp; quiz</div>
+          <div class="mode-desc">Equipment flashcards — sharpen your ID skills fast</div>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-id">
+  <div class="screen-header">
+    <div class="back-btn" onclick="showScreen('screen-home')">‹</div>
+    <div class="screen-title">Identify system</div>
+  </div>
+  <div id="id-content"></div>
+</div>
+
+<div class="screen" id="screen-qualify">
+  <div class="screen-header">
+    <div class="back-btn" onclick="showScreen('screen-home')">‹</div>
+    <div class="screen-title">Qualify upgrades</div>
+  </div>
+  <div id="qualify-content"></div>
+</div>
+
+<div class="screen" id="screen-learn">
+  <div class="screen-header">
+    <div class="back-btn" onclick="showScreen('screen-home')">‹</div>
+    <div class="screen-title">Learn &amp; quiz</div>
+  </div>
+  <div id="learn-content"></div>
+</div>
+
+<nav class="bottomnav">
+  <button class="nav-btn active" onclick="showScreen('screen-home')" id="nav-home">
+    <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg></span>
+    Home
+  </button>
+  <button class="nav-btn" onclick="showScreen('screen-id')" id="nav-id">
+    <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+    Identify
+  </button>
+  <button class="nav-btn" onclick="showScreen('screen-qualify')" id="nav-qualify">
+    <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg></span>
+    Qualify
+  </button>
+  <button class="nav-btn" onclick="startQuiz()" id="nav-learn">
+    <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+    Learn
+  </button>
+</nav>
+
+<script>
+const screens=['screen-home','screen-id','screen-qualify','screen-learn'];
+const navIds=['nav-home','nav-id','nav-qualify','nav-learn'];
+const modeLabels=['HVAC System ID','Identify System','Qualify Upgrades','Learn & Quiz'];
+
+function showScreen(id){
+  screens.forEach((s,i)=>{
+    document.getElementById(s).classList.toggle('active',s===id);
+    document.getElementById(navIds[i]).classList.toggle('active',s===id);
+  });
+  const idx=screens.indexOf(id);
+  document.getElementById('mode-label').textContent=modeLabels[idx]||'';
+  if(id==='screen-id') initID();
+  if(id==='screen-qualify') initQualify();
+}
+
+// ── IDENTIFY DECISION TREE ──────────────────────────────────
+const idTree=[
+  {id:0,q:"Is there an outdoor unit — a metal box with a fan on top — outside the home?",hint:"Look on a concrete pad or wall bracket outside. Heat pumps and AC both have one. Furnace-only homes may have nothing outside.",yes:1,no:4},
+  {id:1,q:"Set the thermostat to HEAT. Does the outdoor unit turn on within 2–3 minutes?",hint:"A heat pump runs the outdoor unit in both heat and cool mode. A standard AC stays silent when heating.",yes:2,no:3},
+  {id:2,q:"Does the thermostat show 'Em Heat', 'Aux Heat', or 'Emergency Heat' anywhere?",hint:"Check all screens and menus on digital thermostats. This setting is exclusive to heat pump systems.",yes:'result-heatpump',no:'result-heatpump'},
+  {id:3,q:"Does the thermostat show 'Em Heat', 'Aux Heat', or 'Emergency Heat'?",hint:"Even if the outdoor unit didn't run, some heat pumps have this option as a backup.",yes:'result-heatpump',no:'result-central-ac'},
+  {id:4,q:"Is there a large metal cabinet inside — in a basement, closet, or utility room?",hint:"This is your furnace or air handler. Look for ductwork connected to it. No cabinet may mean baseboard or radiant heat.",yes:5,no:'result-baseboard'},
+  {id:5,q:"Is there a flue pipe or PVC vent pipe coming out of the top or side, going to the outside?",hint:"Gas units MUST vent combustion gases — look for a round metal pipe or 1–2 white PVC pipes. Electric units have NO vent pipe at all.",yes:6,no:7},
+  {id:6,q:"Can you see a small viewing window on the front with a blue flame glowing inside?",hint:"The burner flame is blue when running. You may also hear the gas igniter click on.",yes:'result-gas',no:'result-gas'},
+  {id:7,q:"Is there only heavy electrical conduit running into the unit — no gas pipe at all?",hint:"Trace every line entering the cabinet. A gas pipe is usually black iron or yellow-coated. Electric units have only conduit.",yes:'result-electric',no:'result-dual'}
+];
+
+const idResults={
+  'result-heatpump':{badge:'heatpump',label:'Heat pump',name:'Heat pump system',
+    desc:'Uses electricity to move heat in both directions — cools in summer, heats in winter. More efficient than electric resistance heat in mild climates like Oregon.',
+    clues:['Outdoor unit runs in both heat and cool mode','Thermostat has Em Heat or Aux Heat setting','No flue or vent pipe on the indoor unit','Model plate may say "HP" or list an HSPF rating','Brass refrigerant lines run between indoor and outdoor units'],
+    svg:drawHeatPump('#1D4ED8','#DBEAFE')},
+  'result-gas':{badge:'gas',label:'Gas furnace',name:'Gas furnace',
+    desc:'Burns natural gas or propane to generate heat, distributed through ducts. Most common system in Oregon homes.',
+    clues:['Flue pipe exits through roof or exterior wall','Blue burner flame visible through small window when running','Gas line (black iron or yellow-coated) enters cabinet','Outdoor unit is AC only — stays off in heat mode','Label or sticker on cabinet says "natural gas" or "propane"'],
+    svg:drawGasFurnace('#D97706','#FEF3C7')},
+  'result-electric':{badge:'electric',label:'Electric furnace',name:'Electric furnace',
+    desc:'Uses electric resistance coils to generate heat. No combustion, no flue pipe. Less efficient than a heat pump — often a good upgrade candidate.',
+    clues:['No flue or vent pipe — unit is fully self-contained','Only electrical conduit enters the cabinet','No gas meter or gas line anywhere on the property','Outdoor unit is cooling only, or there is no outdoor unit','Higher winter electric bills than a heat pump would produce'],
+    svg:drawElectric('#1D4ED8','#DBEAFE')},
+  'result-dual':{badge:'dual',label:'Dual fuel',name:'Dual fuel (hybrid) system',
+    desc:'A heat pump handles mild weather; a gas furnace kicks in when temps drop. You will see both a flue pipe and an outdoor unit that runs in heat mode.',
+    clues:['Both a gas furnace indoors AND a heat pump outdoor unit','Thermostat may show heat pump and gas modes separately','Flue pipe present on indoor unit','Outdoor unit runs in heat mode during mild weather','Gas line enters the indoor cabinet'],
+    svg:drawHeatPump('#16A34A','#DCFCE7')},
+  'result-central-ac':{badge:'electric',label:'AC + separate heat',name:'Central AC with separate heat source',
+    desc:'The outdoor unit is cooling only. Heat comes from a separate indoor system. Go back to the indoor unit and check for a flue pipe (gas) or conduit only (electric).',
+    clues:['Outdoor unit does NOT run in heat mode','No Em Heat or Aux Heat on thermostat','Indoor unit may be gas furnace or electric air handler','Run the indoor unit ID steps to confirm heat source'],
+    svg:drawElectric('#6B7280','#F3F4F6')},
+  'result-baseboard':{badge:'electric',label:'Baseboard / radiant',name:'Electric baseboard or radiant heat',
+    desc:'No central system. Individual electric heaters in each room — no ductwork. Often found in older Oregon homes and rentals.',
+    clues:['Long metal heater units along the base of walls in each room','Each room may have its own individual thermostat','No ductwork, no central air handler anywhere','No outdoor unit','All-electric home — no gas service typically present'],
+    svg:drawBaseboard()}
+};
+
+let idStep=0;
+
+function initID(){idStep=0;renderIDStep();}
+
+function renderIDStep(){
+  const node=idTree[idStep];
+  document.getElementById('id-content').innerHTML=`
+    <div class="step-indicator">Step ${idStep+1} of up to ${idTree.length}</div>
+    <div class="question-card">
+      <div class="question-text">${node.q}</div>
+      <div class="question-hint">${node.hint}</div>
+      <div class="answer-btns">
+        <button class="ans-btn yes" onclick="answerID(true)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Yes
+        </button>
+        <button class="ans-btn no" onclick="answerID(false)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          No
+        </button>
+      </div>
+    </div>`;
+}
+
+function answerID(yes){
+  const node=idTree[idStep];
+  const next=yes?node.yes:node.no;
+  if(typeof next==='string'){showIDResult(next);}
+  else{idStep=next;renderIDStep();}
+}
+
+function showIDResult(key){
+  const r=idResults[key];
+  document.getElementById('id-content').innerHTML=`
+    <div class="result-card">
+      <div class="result-badge ${r.badge}">${r.label}</div>
+      <div class="result-name">${r.name}</div>
+      <div class="result-desc">${r.desc}</div>
+      <div class="illustration">${r.svg}</div>
+      <div class="clues-title">What to look for on-site</div>
+      ${r.clues.map(c=>`<div class="clue-item"><div class="clue-dot"></div><div class="clue-text">${c}</div></div>`).join('')}
+    </div>
+    <button class="restart-btn" onclick="initID()">Start over</button>`;
+}
+
+// ── SVG ILLUSTRATIONS ────────────────────────────────────────
+function drawGasFurnace(stroke,fill){
+  return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="55" y="25" width="90" height="115" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="68" y="36" width="64" height="40" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
+    <circle cx="100" cy="56" r="11" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
+    <path d="M93 56 Q100 45 107 56 Q100 52 93 56Z" fill="${stroke}"/>
+    <rect x="68" y="84" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="68" y="97" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="68" y="110" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="92" y="10" width="9" height="17" rx="3" fill="#9C7B6B" stroke="#D4C4B0" stroke-width="1"/>
+    <rect x="96" y="5" width="8" height="7" rx="1" fill="#6B2D0F"/>
+    <text x="100" y="154" text-anchor="middle" fill="${stroke}" font-size="9" font-family="DM Sans,sans-serif" font-weight="700">flue pipe = gas system</text>
+  </svg>`;
+}
+
+function drawHeatPump(stroke,fill){
+  return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="38" width="72" height="92" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <circle cx="44" cy="78" r="24" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+    <path d="M28 78 Q44 56 60 78 Q44 70 28 78Z" fill="${stroke}" opacity=".7"/>
+    <rect x="13" y="112" width="62" height="8" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
+    <text x="44" y="148" text-anchor="middle" fill="${stroke}" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">outdoor unit</text>
+    <rect x="122" y="18" width="70" height="118" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="130" y="28" width="54" height="48" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
+    <rect x="130" y="84" width="54" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="130" y="97" width="54" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="130" y="110" width="54" height="7" rx="2" fill="#E8DDD4"/>
+    <path d="M80 82 Q100 76 122 72" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <path d="M80 92 Q100 88 122 84" stroke="${stroke}" stroke-width="1" stroke-dasharray="5 3" opacity=".5"/>
+    <text x="157" y="148" text-anchor="middle" fill="${stroke}" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">air handler (indoor)</text>
+  </svg>`;
+}
+
+function drawElectric(stroke,fill){
+  return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="55" y="15" width="90" height="120" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="68" y="26" width="64" height="44" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
+    <path d="M84 33 L98 48 L90 48 L105 63 L91 48 L99 48 Z" fill="${stroke}" opacity=".8"/>
+    <rect x="68" y="78" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="68" y="91" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="68" y="104" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="68" y="117" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <path d="M145 65 L162 65" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M145 58 L162 58" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round" opacity=".4"/>
+    <text x="100" y="154" text-anchor="middle" fill="${stroke}" font-size="9" font-family="DM Sans,sans-serif" font-weight="700">no flue pipe = electric</text>
+  </svg>`;
+}
+
+function drawBaseboard(){
+  return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="95" width="184" height="32" rx="5" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="14" y="101" width="172" height="7" rx="2" fill="#DBEAFE" stroke="#1D4ED8" stroke-width=".8"/>
+    <rect x="14" y="113" width="172" height="7" rx="2" fill="#DBEAFE" stroke="#1D4ED8" stroke-width=".8"/>
+    <rect x="160" y="80" width="24" height="17" rx="4" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1"/>
+    <text x="172" y="92" text-anchor="middle" fill="#1D4ED8" font-size="7" font-family="DM Sans,sans-serif" font-weight="700">68°</text>
+    <text x="100" y="50" text-anchor="middle" fill="#1D4ED8" font-size="10" font-family="DM Sans,sans-serif" font-weight="700">no ducts · no central unit</text>
+    <text x="100" y="67" text-anchor="middle" fill="#9C7B6B" font-size="8" font-family="DM Sans,sans-serif">individual room heaters along baseboard</text>
+    <line x1="8" y1="94" x2="192" y2="94" stroke="#E8DDD4" stroke-width="1"/>
+  </svg>`;
+}
+
+// ── QUALIFY UPGRADES ─────────────────────────────────────────
+function initQualify(){
+  document.getElementById('qualify-content').innerHTML=`
+    <div class="qualify-row">
+      <div class="qualify-label">Current heating system</div>
+      <div class="qualify-opts">
+        ${['Gas furnace','Electric furnace','Heat pump','Baseboard / no ducts','Unknown'].map(o=>
+          `<button class="qualify-chip" onclick="selectChip(this,'heat')">${o}</button>`).join('')}
+      </div>
+    </div>
+    <div class="qualify-row">
+      <div class="qualify-label">Home has ductwork?</div>
+      <div class="qualify-opts">
+        ${['Yes, has ducts','No ducts'].map(o=>
+          `<button class="qualify-chip" onclick="selectChip(this,'ducts')">${o}</button>`).join('')}
+      </div>
+    </div>
+    <div class="qualify-row">
+      <div class="qualify-label">Household income level</div>
+      <div class="qualify-opts">
+        ${['Low income (≤80% AMI)','Moderate (80–150% AMI)','Above 150% AMI','Unknown'].map(o=>
+          `<button class="qualify-chip" onclick="selectChip(this,'income')">${o}</button>`).join('')}
+      </div>
+    </div>
+    <div class="qualify-row">
+      <div class="qualify-label">Utility provider</div>
+      <div class="qualify-opts">
+        ${['PGE','Pacific Power','NW Natural','Cascade Natural Gas','Avista','Other'].map(o=>
+          `<button class="qualify-chip" onclick="selectChip(this,'utility')">${o}</button>`).join('')}
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calcRebates()">Show rebates &amp; incentives</button>
+    <div id="rebate-output"></div>`;
+}
+
+const selections={};
+function selectChip(btn,group){
+  btn.closest('.qualify-opts').querySelectorAll('.qualify-chip').forEach(c=>c.classList.remove('selected'));
+  btn.classList.add('selected');
+  selections[group]=btn.textContent;
+}
+
+function calcRebates(){
+  const heat=selections['heat']||'';
+  const ducts=selections['ducts']||'';
+  const income=selections['income']||'';
+  const utility=selections['utility']||'';
+  const low=income.includes('Low');
+  const mod=income.includes('Moderate')||low;
+  const hasUtil=utility&&utility!=='Other';
+  const hasDucts=ducts.includes('Yes');
+  const items=[];
+
+  if(hasUtil){
+    if(mod){
+      items.push({name:'HEAR rebate',note:'Home electrification — heat pumps, water heaters, appliances',amt:low?'Up to $8,000':'Up to $4,000'});
+    }
+    if(mod){
+      items.push({name:'HOMES whole-home rebate',note:'Requires energy assessment + min. 20% projected savings',amt:low?'Up to $8,000':'Up to $4,000'});
+    }
+    if(heat!=='Heat pump'){
+      items.push({name:'Utility heat pump incentive',note:`${utility||'Utility'} — check current program amounts`,amt:'$200–$1,650'});
+    }
+    if(!hasDucts){
+      items.push({name:'Ductless mini-split incentive',note:low?'Income-qualified may receive no-cost install':'No ductwork needed',amt:low?'$0 (no-cost)':'$200–$500'});
+    }
+    items.push({name:'Weatherization add-on',note:'Insulation, air sealing — stackable with above incentives',amt:'Up to $2,500'});
+    if(income.includes('Above')){
+      items.push({name:'Note: HEAR not available',note:'Above 150% AMI. Utility incentives and HOMES may still apply.',amt:'—'});
+    }
+  } else {
+    items.push({name:'Utility incentives',note:'Select a utility above to see specific program amounts',amt:'Varies'});
+    items.push({name:'HOMES rebate',note:'Open to all income levels — requires home energy assessment',amt:'Up to $8,000'});
+  }
+
+  document.getElementById('rebate-output').innerHTML=`
+    <div class="rebate-result">
+      <div class="dsec" style="margin-top:16px">Potential incentives for this home</div>
+      ${items.map(i=>`
+        <div class="rebate-item">
+          <div><div class="rebate-name">${i.name}</div><div class="rebate-note">${i.note}</div></div>
+          <div class="rebate-amt">${i.amt}</div>
+        </div>`).join('')}
+      <div class="rebate-disclaimer">Amounts are estimates. Final rebates depend on project scope, income verification, and program availability at time of application.</div>
+    </div>`;
+}
+
+// ── LEARN & QUIZ ─────────────────────────────────────────────
+const quizData=[
+  {q:"This unit sits outside and its fan runs in both summer AND winter. What is it?",
+   svg:drawHeatPump('#16A34A','#DCFCE7'),
+   opts:['Central AC unit','Heat pump outdoor unit','Gas furnace exhaust','Evaporative cooler'],
+   answer:1,
+   explain:"Heat pumps run the outdoor unit year-round — pushing heat out in summer, pulling heat in during winter. A standard AC stays completely off in heat mode. Key test: switch to HEAT and watch whether the outdoor unit starts."},
+  {q:"You see a round metal pipe coming out the top of the indoor unit going through the roof. What does this tell you?",
+   svg:drawGasFurnace('#D97706','#FEF3C7'),
+   opts:['It\'s an electric furnace','It\'s a heat pump air handler','It\'s a gas or propane furnace','It\'s a boiler'],
+   answer:2,
+   explain:"The flue pipe vents combustion gases from a gas or propane furnace. Electric systems create no combustion, so they have zero vent pipes. Rule: see a flue = gas. No flue = electric or heat pump."},
+  {q:"The indoor cabinet has only heavy electrical conduit running into it — no pipes, no flue, no gas line. What is this most likely?",
+   svg:drawElectric('#1D4ED8','#DBEAFE'),
+   opts:['Gas furnace','Propane furnace','Electric furnace or heat pump air handler','Oil boiler'],
+   answer:2,
+   explain:"No flue + only electrical conduit = electric system. Could be an electric furnace (resistance coils) or a heat pump air handler (indoor half of a heat pump split). Check if there's also an outdoor unit — if yes, you likely have a heat pump."},
+  {q:"The thermostat has an 'Em Heat' option in the menu. What does this confirm about the system?",
+   svg:`<svg width="200" height="150" viewBox="0 0 200 150" fill="none"><rect x="55" y="8" width="90" height="130" rx="10" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/><rect x="64" y="20" width="72" height="55" rx="5" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/><text x="100" y="43" text-anchor="middle" fill="#166534" font-size="10" font-family="DM Sans,sans-serif" font-weight="800">HEAT MODE</text><text x="100" y="61" text-anchor="middle" fill="#166534" font-size="9" font-family="DM Sans,sans-serif">68°F</text><rect x="64" y="82" width="72" height="22" rx="4" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/><text x="100" y="97" text-anchor="middle" fill="#92400E" font-size="10" font-family="DM Sans,sans-serif" font-weight="800">Em Heat</text><rect x="64" y="110" width="32" height="16" rx="4" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1"/><text x="80" y="121" text-anchor="middle" fill="#1D4ED8" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">Cool</text><rect x="104" y="110" width="32" height="16" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/><text x="120" y="121" text-anchor="middle" fill="#166534" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">Heat</text></svg>`,
+   opts:['It\'s a gas furnace','It\'s electric baseboard','It\'s a heat pump system','It\'s a boiler'],
+   answer:2,
+   explain:"Emergency Heat (Em Heat or Aux Heat) is exclusive to heat pump systems — no exceptions. It switches from the heat pump to backup heating (electric strips or gas furnace). If you see it on any thermostat, there is a heat pump in the system."},
+  {q:"Long heaters run along the bottom of walls in each room. No outdoor unit, no ductwork, no central cabinet. What system is this?",
+   svg:drawBaseboard(),
+   opts:['Heat pump','Central gas furnace','Electric baseboard heat','Packaged rooftop unit'],
+   answer:2,
+   explain:"Electric baseboard heaters are self-contained with no central system — no ducts, no outdoor unit, each room heats independently. Common in older Oregon homes and apartments. No ducts means a ductless mini-split heat pump is usually the most cost-effective upgrade path."},
+  {q:"There's a flue pipe on the indoor unit AND an outdoor unit that runs in heat mode. What system is this?",
+   svg:`<svg width="200" height="155" viewBox="0 0 200 155" fill="none"><rect x="8" y="40" width="60" height="86" rx="5" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/><circle cx="38" cy="78" r="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/><path d="M24 78 Q38 60 52 78 Q38 70 24 78Z" fill="#16A34A" opacity=".7"/><text x="38" y="138" text-anchor="middle" fill="#166534" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">outdoor unit ON</text><rect x="122" y="14" width="70" height="112" rx="5" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/><rect x="132" y="24" width="50" height="32" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/><circle cx="157" cy="40" r="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/><path d="M152 40 Q157 33 162 40 Q157 37 152 40Z" fill="#D97706"/><rect x="140" y="8" width="7" height="12" rx="2" fill="#9C7B6B" stroke="#D4C4B0" stroke-width="1"/><text x="157" y="140" text-anchor="middle" fill="#92400E" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">flue pipe + gas furnace</text><path d="M68 82 Q94 77 122 72" stroke="#16A34A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".7"/></svg>`,
+   opts:['Heat pump only','Gas furnace only','Dual fuel (hybrid) system','Electric furnace + AC'],
+   answer:2,
+   explain:"Dual fuel (hybrid) combines a heat pump with a gas furnace backup. The heat pump handles mild days (more efficient), gas takes over when it gets very cold. Dead giveaway: both a flue pipe on the indoor unit AND an outdoor unit that activates in heat mode."}
+];
+
+let quizIdx=0,quizScore=0,quizAnswered=false;
+
+function startQuiz(){
+  quizIdx=0;quizScore=0;quizAnswered=false;
+  showScreen('screen-learn');
+  renderQuiz();
+}
+
+function renderQuiz(){
+  const el=document.getElementById('learn-content');
+  if(quizIdx>=quizData.length){showScore(el);return;}
+  const q=quizData[quizIdx];
+  el.innerHTML=`
+    <div class="step-indicator">${quizIdx+1} of ${quizData.length} — score: ${quizScore}</div>
+    <div class="quiz-img">${q.svg}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-opts" id="quiz-opts">
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="nextQuiz()">${quizIdx<quizData.length-1?'Next question →':'See my results'}</button>`;
+}
+
+function answerQuiz(i){
+  if(quizAnswered)return;
+  quizAnswered=true;
+  const q=quizData[quizIdx];
+  document.querySelectorAll('.quiz-opt').forEach((btn,idx)=>{
+    if(idx===q.answer)btn.classList.add('correct');
+    else if(idx===i&&i!==q.answer)btn.classList.add('wrong');
+    btn.onclick=null;
+  });
+  if(i===q.answer)quizScore++;
+  const fb=document.getElementById('quiz-feedback');
+  fb.textContent=q.explain;
+  fb.classList.add('show');
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQuiz(){quizIdx++;quizAnswered=false;renderQuiz();}
+
+function showScore(el){
+  const pct=Math.round((quizScore/quizData.length)*100);
+  const msg=pct===100?'Perfect. You can identify any system cold.':
+    pct>=80?'Strong work — a couple to review and you\'re set.':
+    pct>=60?'Good foundation. Focus on the ones you missed.':
+    'Keep drilling — it clicks fast with repetition.';
+  el.innerHTML=`
+    <div class="score-card">
+      <div class="score-num">${quizScore}/${quizData.length}</div>
+      <div class="score-label">${pct}% correct</div>
+      <div class="score-msg">${msg}</div>
+    </div>
+    <button class="restart-btn" onclick="startQuiz()">Retake quiz</button>
+    <button class="restart-btn" style="margin-top:8px" onclick="showScreen('screen-home')">Back to home</button>`;
+}
+</script>
+</body>
+</html>
