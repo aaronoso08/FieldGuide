@@ -7,19 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --brand:#6B2D0F;--brand-mid:#8B3A12;--brand-light:#A0522D;
-  --accent:#E87A2A;--accent-light:#F59E0B;
-  --bg:#F7F3EF;--surface:#FFF;--surface2:#FDF8F4;
-  --border:#E8DDD4;--border-dark:#D4C4B0;
-  --text:#1C1209;--text2:#5C4033;--text3:#9C7B6B;
+  --brand:#12211B;--brand-mid:#193B2D;--brand-light:#24513E;
+  --accent:#FF7A1A;--accent-light:#F59E0B;
+  --bg:#F4F6F3;--surface:#FFF;--surface2:#F8FAF8;
+  --border:#DEE5DF;--border-dark:#C8D3CA;
+  --text:#14211B;--text2:#536158;--text3:#849087;
   --green:#16A34A;--green-bg:#DCFCE7;--green-dark:#166534;
   --red:#DC2626;--red-bg:#FEE2E2;--red-dark:#991B1B;
   --yellow:#D97706;--yellow-bg:#FEF3C7;--yellow-dark:#92400E;
   --blue:#1D4ED8;--blue-bg:#DBEAFE;
   --gray:#6B7280;--gray-bg:#F3F4F6;
-  --sh-sm:0 1px 3px rgba(107,45,15,.08);
-  --sh:0 4px 12px rgba(107,45,15,.12);
-  --sh-lg:0 12px 32px rgba(107,45,15,.18);
+  --sh-sm:0 1px 3px rgba(20,33,27,.08);
+  --sh:0 4px 12px rgba(20,33,27,.12);
+  --sh-lg:0 12px 32px rgba(20,33,27,.18);
   --r:10px;--rl:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -119,7 +119,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 .calc-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--r);
   color:#fff;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;
-  margin-top:4px;transition:background .15s;box-shadow:0 4px 12px rgba(232,122,42,.3)}
+  margin-top:4px;transition:background .15s;box-shadow:0 4px 12px rgba(255,122,26,.3)}
 .calc-btn:hover{background:#d46b1a}
 .calc-btn:active{transform:scale(.98)}
 
@@ -165,7 +165,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 .bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);
   border-top:1.5px solid var(--border);display:flex;z-index:100;
-  box-shadow:0 -4px 12px rgba(107,45,15,.08)}
+  box-shadow:0 -4px 12px rgba(20,33,27,.08)}
 .nav-btn{flex:1;padding:10px 8px 14px;display:flex;flex-direction:column;align-items:center;gap:3px;
   cursor:pointer;border:none;background:none;color:var(--text3);font-family:'DM Sans',sans-serif;
   font-size:.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:color .12s}
@@ -378,31 +378,31 @@ function showIDResult(key){
 // ── SVG ILLUSTRATIONS ────────────────────────────────────────
 function drawGasFurnace(stroke,fill){
   return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="55" y="25" width="90" height="115" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="55" y="25" width="90" height="115" rx="6" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/>
     <rect x="68" y="36" width="64" height="40" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
     <circle cx="100" cy="56" r="11" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
     <path d="M93 56 Q100 45 107 56 Q100 52 93 56Z" fill="${stroke}"/>
-    <rect x="68" y="84" width="64" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="68" y="97" width="64" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="68" y="110" width="64" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="92" y="10" width="9" height="17" rx="3" fill="#9C7B6B" stroke="#D4C4B0" stroke-width="1"/>
-    <rect x="96" y="5" width="8" height="7" rx="1" fill="#6B2D0F"/>
+    <rect x="68" y="84" width="64" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="68" y="97" width="64" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="68" y="110" width="64" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="92" y="10" width="9" height="17" rx="3" fill="#849087" stroke="#C8D3CA" stroke-width="1"/>
+    <rect x="96" y="5" width="8" height="7" rx="1" fill="#12211B"/>
     <text x="100" y="154" text-anchor="middle" fill="${stroke}" font-size="9" font-family="DM Sans,sans-serif" font-weight="700">flue pipe = gas system</text>
   </svg>`;
 }
 
 function drawHeatPump(stroke,fill){
   return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="8" y="38" width="72" height="92" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="8" y="38" width="72" height="92" rx="6" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/>
     <circle cx="44" cy="78" r="24" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
     <path d="M28 78 Q44 56 60 78 Q44 70 28 78Z" fill="${stroke}" opacity=".7"/>
     <rect x="13" y="112" width="62" height="8" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
     <text x="44" y="148" text-anchor="middle" fill="${stroke}" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">outdoor unit</text>
-    <rect x="122" y="18" width="70" height="118" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="122" y="18" width="70" height="118" rx="6" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/>
     <rect x="130" y="28" width="54" height="48" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
-    <rect x="130" y="84" width="54" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="130" y="97" width="54" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="130" y="110" width="54" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="130" y="84" width="54" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="130" y="97" width="54" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="130" y="110" width="54" height="7" rx="2" fill="#DEE5DF"/>
     <path d="M80 82 Q100 76 122 72" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="5 3"/>
     <path d="M80 92 Q100 88 122 84" stroke="${stroke}" stroke-width="1" stroke-dasharray="5 3" opacity=".5"/>
     <text x="157" y="148" text-anchor="middle" fill="${stroke}" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">air handler (indoor)</text>
@@ -411,13 +411,13 @@ function drawHeatPump(stroke,fill){
 
 function drawElectric(stroke,fill){
   return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="55" y="15" width="90" height="120" rx="6" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="55" y="15" width="90" height="120" rx="6" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/>
     <rect x="68" y="26" width="64" height="44" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="1"/>
     <path d="M84 33 L98 48 L90 48 L105 63 L91 48 L99 48 Z" fill="${stroke}" opacity=".8"/>
-    <rect x="68" y="78" width="64" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="68" y="91" width="64" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="68" y="104" width="64" height="7" rx="2" fill="#E8DDD4"/>
-    <rect x="68" y="117" width="64" height="7" rx="2" fill="#E8DDD4"/>
+    <rect x="68" y="78" width="64" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="68" y="91" width="64" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="68" y="104" width="64" height="7" rx="2" fill="#DEE5DF"/>
+    <rect x="68" y="117" width="64" height="7" rx="2" fill="#DEE5DF"/>
     <path d="M145 65 L162 65" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round"/>
     <path d="M145 58 L162 58" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round" opacity=".4"/>
     <text x="100" y="154" text-anchor="middle" fill="${stroke}" font-size="9" font-family="DM Sans,sans-serif" font-weight="700">no flue pipe = electric</text>
@@ -426,14 +426,14 @@ function drawElectric(stroke,fill){
 
 function drawBaseboard(){
   return `<svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="8" y="95" width="184" height="32" rx="5" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/>
+    <rect x="8" y="95" width="184" height="32" rx="5" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/>
     <rect x="14" y="101" width="172" height="7" rx="2" fill="#DBEAFE" stroke="#1D4ED8" stroke-width=".8"/>
     <rect x="14" y="113" width="172" height="7" rx="2" fill="#DBEAFE" stroke="#1D4ED8" stroke-width=".8"/>
-    <rect x="160" y="80" width="24" height="17" rx="4" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1"/>
+    <rect x="160" y="80" width="24" height="17" rx="4" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1"/>
     <text x="172" y="92" text-anchor="middle" fill="#1D4ED8" font-size="7" font-family="DM Sans,sans-serif" font-weight="700">68°</text>
     <text x="100" y="50" text-anchor="middle" fill="#1D4ED8" font-size="10" font-family="DM Sans,sans-serif" font-weight="700">no ducts · no central unit</text>
-    <text x="100" y="67" text-anchor="middle" fill="#9C7B6B" font-size="8" font-family="DM Sans,sans-serif">individual room heaters along baseboard</text>
-    <line x1="8" y1="94" x2="192" y2="94" stroke="#E8DDD4" stroke-width="1"/>
+    <text x="100" y="67" text-anchor="middle" fill="#849087" font-size="8" font-family="DM Sans,sans-serif">individual room heaters along baseboard</text>
+    <line x1="8" y1="94" x2="192" y2="94" stroke="#DEE5DF" stroke-width="1"/>
   </svg>`;
 }
 
@@ -542,7 +542,7 @@ const quizData=[
    answer:2,
    explain:"No flue + only electrical conduit = electric system. Could be an electric furnace (resistance coils) or a heat pump air handler (indoor half of a heat pump split). Check if there's also an outdoor unit — if yes, you likely have a heat pump."},
   {q:"The thermostat has an 'Em Heat' option in the menu. What does this confirm about the system?",
-   svg:`<svg width="200" height="150" viewBox="0 0 200 150" fill="none"><rect x="55" y="8" width="90" height="130" rx="10" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/><rect x="64" y="20" width="72" height="55" rx="5" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/><text x="100" y="43" text-anchor="middle" fill="#166534" font-size="10" font-family="DM Sans,sans-serif" font-weight="800">HEAT MODE</text><text x="100" y="61" text-anchor="middle" fill="#166534" font-size="9" font-family="DM Sans,sans-serif">68°F</text><rect x="64" y="82" width="72" height="22" rx="4" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/><text x="100" y="97" text-anchor="middle" fill="#92400E" font-size="10" font-family="DM Sans,sans-serif" font-weight="800">Em Heat</text><rect x="64" y="110" width="32" height="16" rx="4" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1"/><text x="80" y="121" text-anchor="middle" fill="#1D4ED8" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">Cool</text><rect x="104" y="110" width="32" height="16" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/><text x="120" y="121" text-anchor="middle" fill="#166534" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">Heat</text></svg>`,
+   svg:`<svg width="200" height="150" viewBox="0 0 200 150" fill="none"><rect x="55" y="8" width="90" height="130" rx="10" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/><rect x="64" y="20" width="72" height="55" rx="5" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/><text x="100" y="43" text-anchor="middle" fill="#166534" font-size="10" font-family="DM Sans,sans-serif" font-weight="800">HEAT MODE</text><text x="100" y="61" text-anchor="middle" fill="#166534" font-size="9" font-family="DM Sans,sans-serif">68°F</text><rect x="64" y="82" width="72" height="22" rx="4" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/><text x="100" y="97" text-anchor="middle" fill="#92400E" font-size="10" font-family="DM Sans,sans-serif" font-weight="800">Em Heat</text><rect x="64" y="110" width="32" height="16" rx="4" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="1"/><text x="80" y="121" text-anchor="middle" fill="#1D4ED8" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">Cool</text><rect x="104" y="110" width="32" height="16" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/><text x="120" y="121" text-anchor="middle" fill="#166534" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">Heat</text></svg>`,
    opts:['It\'s a gas furnace','It\'s electric baseboard','It\'s a heat pump system','It\'s a boiler'],
    answer:2,
    explain:"Emergency Heat (Em Heat or Aux Heat) is exclusive to heat pump systems — no exceptions. It switches from the heat pump to backup heating (electric strips or gas furnace). If you see it on any thermostat, there is a heat pump in the system."},
@@ -552,7 +552,7 @@ const quizData=[
    answer:2,
    explain:"Electric baseboard heaters are self-contained with no central system — no ducts, no outdoor unit, each room heats independently. Common in older Oregon homes and apartments. No ducts means a ductless mini-split heat pump is usually the most cost-effective upgrade path."},
   {q:"There's a flue pipe on the indoor unit AND an outdoor unit that runs in heat mode. What system is this?",
-   svg:`<svg width="200" height="155" viewBox="0 0 200 155" fill="none"><rect x="8" y="40" width="60" height="86" rx="5" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/><circle cx="38" cy="78" r="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/><path d="M24 78 Q38 60 52 78 Q38 70 24 78Z" fill="#16A34A" opacity=".7"/><text x="38" y="138" text-anchor="middle" fill="#166534" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">outdoor unit ON</text><rect x="122" y="14" width="70" height="112" rx="5" fill="#FDF8F4" stroke="#D4C4B0" stroke-width="1.5"/><rect x="132" y="24" width="50" height="32" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/><circle cx="157" cy="40" r="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/><path d="M152 40 Q157 33 162 40 Q157 37 152 40Z" fill="#D97706"/><rect x="140" y="8" width="7" height="12" rx="2" fill="#9C7B6B" stroke="#D4C4B0" stroke-width="1"/><text x="157" y="140" text-anchor="middle" fill="#92400E" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">flue pipe + gas furnace</text><path d="M68 82 Q94 77 122 72" stroke="#16A34A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".7"/></svg>`,
+   svg:`<svg width="200" height="155" viewBox="0 0 200 155" fill="none"><rect x="8" y="40" width="60" height="86" rx="5" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/><circle cx="38" cy="78" r="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/><path d="M24 78 Q38 60 52 78 Q38 70 24 78Z" fill="#16A34A" opacity=".7"/><text x="38" y="138" text-anchor="middle" fill="#166534" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">outdoor unit ON</text><rect x="122" y="14" width="70" height="112" rx="5" fill="#F8FAF8" stroke="#C8D3CA" stroke-width="1.5"/><rect x="132" y="24" width="50" height="32" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/><circle cx="157" cy="40" r="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/><path d="M152 40 Q157 33 162 40 Q157 37 152 40Z" fill="#D97706"/><rect x="140" y="8" width="7" height="12" rx="2" fill="#849087" stroke="#C8D3CA" stroke-width="1"/><text x="157" y="140" text-anchor="middle" fill="#92400E" font-size="8" font-family="DM Sans,sans-serif" font-weight="700">flue pipe + gas furnace</text><path d="M68 82 Q94 77 122 72" stroke="#16A34A" stroke-width="1.5" stroke-dasharray="5 3" opacity=".7"/></svg>`,
    opts:['Heat pump only','Gas furnace only','Dual fuel (hybrid) system','Electric furnace + AC'],
    answer:2,
    explain:"Dual fuel (hybrid) combines a heat pump with a gas furnace backup. The heat pump handles mild days (more efficient), gas takes over when it gets very cold. Dead giveaway: both a flue pipe on the indoor unit AND an outdoor unit that activates in heat mode."}
